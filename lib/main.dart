@@ -25,6 +25,9 @@ class MyApp extends StatelessWidget {
           primary: AppColors.primaryColor,
           secondary: AppColors.accentColor,
           surface: AppColors.surfaceColor,
+          background: AppColors.backgroundColor,
+          onPrimary: Colors.black,
+          onSurface: AppColors.textColor,
         ),
         scaffoldBackgroundColor: AppColors.backgroundColor,
         textTheme: GoogleFonts.poppinsTextTheme(
@@ -32,21 +35,33 @@ class MyApp extends StatelessWidget {
                 bodyColor: Colors.white,
                 displayColor: Colors.white,
               ),
+        ).copyWith(
+          displayLarge: GoogleFonts.poppins(
+            fontSize: 56,
+            fontWeight: FontWeight.bold,
+            letterSpacing: -1.5,
+            color: Colors.white,
+          ),
+          displayMedium: GoogleFonts.poppins(
+            fontSize: 40,
+            fontWeight: FontWeight.bold,
+            letterSpacing: -0.5,
+            color: Colors.white,
+          ),
+          headlineMedium: GoogleFonts.poppins(
+            fontSize: 32,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+          bodyLarge: GoogleFonts.poppins(
+            fontSize: 16,
+            fontWeight: FontWeight.normal,
+            color: AppColors.textColorSecondary,
+            height: 1.5,
+          ),
         ),
       ),
       home: const HomeScreen(),
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-

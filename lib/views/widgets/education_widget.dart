@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'responsive_widget.dart';
 
 class EducationWidget extends StatelessWidget {
-  const EducationWidget({Key? key}) : super(key: key);
+  const EducationWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,8 @@ class EducationWidget extends StatelessWidget {
     return _buildEducationSection(context, isMobile: false);
   }
 
-  Widget _buildEducationSection(BuildContext context, {required bool isMobile}) {
+  Widget _buildEducationSection(BuildContext context,
+      {required bool isMobile}) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(
@@ -147,7 +148,10 @@ class EducationWidget extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Row(
+                              Wrap(
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                spacing: 10,
+                                runSpacing: 5,
                                 children: [
                                   const Text(
                                     "B.E. in Software Engineering",
@@ -157,9 +161,9 @@ class EducationWidget extends StatelessWidget {
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                  const SizedBox(width: 10),
                                   InkWell(
-                                    onTap: () => _launchURL("https://sw.muet.edu.pk/syllabus.php"),
+                                    onTap: () => _launchURL(
+                                        "https://sw.muet.edu.pk/syllabus.php"),
                                     child: const Text(
                                       "Link to all courses",
                                       style: TextStyle(
@@ -200,7 +204,8 @@ class EducationWidget extends StatelessWidget {
                       spacing: 10,
                       runSpacing: 10,
                       children: [
-                        _buildCourseChip("Mobile Application Development (Flutter)"),
+                        _buildCourseChip(
+                            "Mobile Application Development (Flutter)"),
                         _buildCourseChip("OOP"),
                         _buildCourseChip("Database Systems"),
                         _buildCourseChip("Data Structures And Algorithms"),
@@ -371,13 +376,16 @@ class EducationWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Issued by: $issuer",
-                      style: const TextStyle(
-                        color: AppColors.textColorSecondary,
-                        fontSize: 14,
+                    Expanded(
+                      child: Text(
+                        "Issued by: $issuer",
+                        style: const TextStyle(
+                          color: AppColors.textColorSecondary,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
+                    const SizedBox(width: 10),
                     Text(
                       year,
                       style: const TextStyle(

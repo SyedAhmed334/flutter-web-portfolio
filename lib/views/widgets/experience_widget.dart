@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../utils/app_colors.dart';
 import '../../models/experience_model.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:timelines/timelines.dart';
 
 import 'responsive_widget.dart';
 
@@ -25,12 +24,14 @@ class ExperienceWidget extends StatelessWidget {
     return _buildExperienceSection(context, isMobile: true);
   }
 
-  Widget _buildTabletExperience(BuildContext context) {
+  Widget _buildDesktopExperience(BuildContext context) {
     return _buildExperienceSection(context, isMobile: false);
   }
 
-  Widget _buildDesktopExperience(BuildContext context) {
-    return _buildExperienceSection(context, isMobile: false);
+  Widget _buildTabletExperience(BuildContext context) {
+    // Using mobile layout (single column) for tablet to ensure better spacing
+    // as the desktop split view might be too cramped for tablet width.
+    return _buildExperienceSection(context, isMobile: true);
   }
 
   Widget _buildExperienceSection(BuildContext context,
@@ -106,120 +107,131 @@ class ExperienceWidget extends StatelessWidget {
           delay: 300.ms,
         ),
       ],
-      child: Timeline.tileBuilder(
-        theme: TimelineThemeData(
-          direction: Axis.vertical,
-          connectorTheme: const ConnectorThemeData(
-            thickness: 2.0,
-            color: AppColors.primaryColor,
-          ),
-        ),
-        builder: TimelineTileBuilder.connected(
-          connectionDirection: ConnectionDirection.before,
-          itemCount: experiences.length,
-          contentsBuilder: (_, index) {
-            return Padding(
-              padding:
-                  const EdgeInsets.only(left: 20.0, bottom: 40.0, top: 10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    experiences[index].company,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Row(
+      child: Column(
+        children: List.generate(
+          experiences.length,
+          (index) => IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Timeline Line Column
+                SizedBox(
+                  width: 50,
+                  child: Column(
                     children: [
-                      Text(
-                        experiences[index].role,
-                        style: const TextStyle(
+                      Container(
+                        width: 20,
+                        height: 20,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
                           color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
+                        ),
+                        child: const Icon(
+                          Icons.work,
+                          color: Colors.white,
+                          size: 12,
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 3),
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryColor.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Text(
-                          experiences[index].skills,
-                          style: const TextStyle(
-                            color: AppColors.primaryColor,
-                            fontSize: 12,
-                          ),
+                      Expanded(
+                        child: Container(
+                          width: 2,
+                          color: AppColors.primaryColor,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 5),
-                  Text(
-                    experiences[index].duration,
-                    style: const TextStyle(
-                      color: AppColors.textColorSecondary,
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  ...experiences[index].responsibilities.map((responsibility) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Icon(
-                            Icons.arrow_right,
-                            color: AppColors.primaryColor,
-                            size: 20,
+                ),
+                // Content Column
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 40.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          experiences[index].company,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
                           ),
-                          const SizedBox(width: 5),
-                          Expanded(
-                            child: Text(
-                              responsibility,
+                        ),
+                        const SizedBox(height: 5),
+                        Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          spacing: 10,
+                          runSpacing: 5,
+                          children: [
+                            Text(
+                              experiences[index].role,
                               style: const TextStyle(
-                                color: AppColors.textColorSecondary,
-                                fontSize: 14,
-                                height: 1.5,
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
                               ),
                             ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 3),
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryColor.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Text(
+                                experiences[index].skills,
+                                style: const TextStyle(
+                                  color: AppColors.primaryColor,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          experiences[index].duration,
+                          style: const TextStyle(
+                            color: AppColors.textColorSecondary,
+                            fontSize: 14,
                           ),
-                        ],
-                      ),
-                    );
-                  }),
-                ],
-              ),
-            );
-          },
-          indicatorBuilder: (_, index) {
-            return const DotIndicator(
-              size: 16,
-              color: AppColors.primaryColor,
-              child: Icon(
-                Icons.work,
-                color: Colors.white,
-                size: 12,
-              ),
-            );
-          },
-          connectorBuilder: (_, index, connectorType) {
-            return const SolidLineConnector(
-              thickness: 2,
-              color: AppColors.primaryColor,
-            );
-          },
+                        ),
+                        const SizedBox(height: 15),
+                        ...experiences[index]
+                            .responsibilities
+                            .map((responsibility) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  Icons.arrow_right,
+                                  color: AppColors.primaryColor,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 5),
+                                Expanded(
+                                  child: Text(
+                                    responsibility,
+                                    style: const TextStyle(
+                                      color: AppColors.textColorSecondary,
+                                      fontSize: 14,
+                                      height: 1.5,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
       ),
     );
   }
@@ -240,125 +252,129 @@ class ExperienceWidget extends StatelessWidget {
           experiences.length,
           (index) => Container(
             margin: const EdgeInsets.only(bottom: 40),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        experiences[index].company,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        experiences[index].duration,
-                        style: const TextStyle(
-                          color: AppColors.textColorSecondary,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 100,
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 20,
-                        height: 20,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.primaryColor,
-                        ),
-                        child: const Icon(
-                          Icons.work,
-                          color: Colors.white,
-                          size: 12,
-                        ),
-                      ),
-                      Container(
-                        width: 2,
-                        height: index == experiences.length - 1 ? 120 : 300,
-                        color: AppColors.primaryColor,
-                      ),
-                    ],
-                  ),
-                ),
-                
-                Expanded(
-                  flex: 5,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            experiences[index].role,
-                            style: const TextStyle(
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18,
-                            ),
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          experiences[index].company,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22,
                           ),
-                          const SizedBox(width: 15),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryColor.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Text(
-                              experiences[index].skills,
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          experiences[index].duration,
+                          style: const TextStyle(
+                            color: AppColors.textColorSecondary,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 100,
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 20,
+                          height: 20,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.primaryColor,
+                          ),
+                          child: const Icon(
+                            Icons.work,
+                            color: Colors.white,
+                            size: 12,
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            width: 2,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          spacing: 15,
+                          runSpacing: 5,
+                          children: [
+                            Text(
+                              experiences[index].role,
                               style: const TextStyle(
                                 color: AppColors.primaryColor,
-                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      ...experiences[index]
-                          .responsibilities
-                          .map((responsibility) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 10.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Icon(
-                                Icons.arrow_right,
-                                color: AppColors.primaryColor,
-                                size: 20,
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryColor.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(5),
                               ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Text(
-                                  responsibility,
-                                  style: const TextStyle(
-                                    color: AppColors.textColorSecondary,
-                                    fontSize: 16,
-                                    height: 1.5,
-                                  ),
+                              child: Text(
+                                experiences[index].skills,
+                                style: const TextStyle(
+                                  color: AppColors.primaryColor,
+                                  fontSize: 14,
                                 ),
                               ),
-                            ],
-                          ),
-                        );
-                      }),
-                    ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        ...experiences[index]
+                            .responsibilities
+                            .map((responsibility) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 10.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  Icons.arrow_right,
+                                  color: AppColors.primaryColor,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Text(
+                                    responsibility,
+                                    style: const TextStyle(
+                                      color: AppColors.textColorSecondary,
+                                      fontSize: 16,
+                                      height: 1.5,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

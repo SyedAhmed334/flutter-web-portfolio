@@ -46,7 +46,7 @@ class ProjectsWidget extends StatelessWidget {
         color: AppColors.backgroundColor,
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Center(
             child: Animate(

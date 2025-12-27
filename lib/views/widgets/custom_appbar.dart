@@ -52,7 +52,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
       actions: [
-        if (!ResponsiveWidget.isMobile(context))
+        if (ResponsiveWidget.isDesktop(context))
           Row(
             children: List.generate(
               AppConstants.navItems.length,
@@ -64,7 +64,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
         const SizedBox(width: 20),
-        if (ResponsiveWidget.isMobile(context))
+        if (!ResponsiveWidget.isDesktop(context))
           IconButton(
             icon: const Icon(Icons.menu, color: AppColors.primaryColor),
             onPressed: () {

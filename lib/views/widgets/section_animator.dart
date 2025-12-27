@@ -21,7 +21,7 @@ class SectionAnimator extends StatefulWidget {
   final Curve curve;
   final double visibilityThreshold;
   final bool animateOnce;
-  
+
   const SectionAnimator({
     Key? key,
     required this.sectionId,
@@ -47,9 +47,10 @@ class _SectionAnimatorState extends State<SectionAnimator> {
       key: Key(widget.sectionId),
       onVisibilityChanged: (visibilityInfo) {
         if (widget.animateOnce && _hasAnimated) return;
-        
-        bool shouldBeVisible = visibilityInfo.visibleFraction > widget.visibilityThreshold;
-        
+
+        bool shouldBeVisible =
+            visibilityInfo.visibleFraction > widget.visibilityThreshold;
+
         if (shouldBeVisible != _isVisible) {
           setState(() {
             _isVisible = shouldBeVisible;
@@ -72,7 +73,7 @@ class _SectionAnimatorState extends State<SectionAnimator> {
           curve: widget.curve,
           child: widget.child,
         );
-      
+
       case AnimationStyle.slideUp:
         return AnimatedOpacity(
           opacity: _isVisible ? 1.0 : 0.0,
@@ -85,7 +86,7 @@ class _SectionAnimatorState extends State<SectionAnimator> {
             child: widget.child,
           ),
         );
-      
+
       case AnimationStyle.slideDown:
         return AnimatedOpacity(
           opacity: _isVisible ? 1.0 : 0.0,
@@ -98,7 +99,7 @@ class _SectionAnimatorState extends State<SectionAnimator> {
             child: widget.child,
           ),
         );
-      
+
       case AnimationStyle.slideLeft:
         return AnimatedOpacity(
           opacity: _isVisible ? 1.0 : 0.0,
@@ -111,7 +112,7 @@ class _SectionAnimatorState extends State<SectionAnimator> {
             child: widget.child,
           ),
         );
-      
+
       case AnimationStyle.slideRight:
         return AnimatedOpacity(
           opacity: _isVisible ? 1.0 : 0.0,
@@ -124,7 +125,7 @@ class _SectionAnimatorState extends State<SectionAnimator> {
             child: widget.child,
           ),
         );
-      
+
       case AnimationStyle.scaleUp:
         return AnimatedOpacity(
           opacity: _isVisible ? 1.0 : 0.0,
@@ -137,7 +138,7 @@ class _SectionAnimatorState extends State<SectionAnimator> {
             child: widget.child,
           ),
         );
-      
+
       case AnimationStyle.grow:
         return AnimatedOpacity(
           opacity: _isVisible ? 1.0 : 0.0,
@@ -153,9 +154,8 @@ class _SectionAnimatorState extends State<SectionAnimator> {
             child: widget.child,
           ),
         );
-      
+
       case AnimationStyle.none:
-      default:
         return widget.child;
     }
   }
@@ -174,7 +174,7 @@ class StaggeredItems extends StatefulWidget {
   final double spacing;
   final double runSpacing;
   final bool animateOnce;
-  
+
   const StaggeredItems({
     Key? key,
     required this.children,
@@ -204,9 +204,10 @@ class _StaggeredItemsState extends State<StaggeredItems> {
       key: Key(widget.sectionId),
       onVisibilityChanged: (visibilityInfo) {
         if (widget.animateOnce && _hasAnimated) return;
-        
-        bool shouldBeVisible = visibilityInfo.visibleFraction > widget.visibilityThreshold;
-        
+
+        bool shouldBeVisible =
+            visibilityInfo.visibleFraction > widget.visibilityThreshold;
+
         if (shouldBeVisible != _isVisible) {
           setState(() {
             _isVisible = shouldBeVisible;
@@ -259,7 +260,7 @@ class _StaggeredItem extends StatelessWidget {
   Widget build(BuildContext context) {
     // Calculate delay based on index
     final delay = Duration(milliseconds: index * staggerDelay.inMilliseconds);
-    
+
     return FutureBuilder(
       // Only apply delay if becoming visible
       future: isVisible ? Future.delayed(delay) : Future.value(),

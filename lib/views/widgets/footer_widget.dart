@@ -246,7 +246,7 @@ class FooterWidget extends StatelessWidget {
       onTap: () => _launchURL(url),
       child: Container(
         width: 200,
-        height: MediaQuery.of(Get.context!).size.width < 600 ? 150 : 180,
+        height: 200,
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: AppColors.cardColor,

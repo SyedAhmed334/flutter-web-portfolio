@@ -156,7 +156,6 @@ class SectionAnimatorState extends State<SectionAnimator> {
         );
 
       case AnimationStyle.none:
-      default:
         return widget.child;
     }
   }

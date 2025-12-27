@@ -75,7 +75,7 @@ class _SkillsWidgetState extends State<SkillsWidget> {
         color: AppColors.backgroundColor,
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Header with animations using VisibilityDetector
           VisibilityDetector(
